@@ -1,9 +1,17 @@
 import subprocess
 import os
 import shutil
+import sys
 
-path = r''
-out = r""
+
+args = str(sys.argv)
+# path = args[0]
+# out = args[1]
+
+####insert you input directory path and your desired destination
+path = r'C:\inetpub\wwwroot\wab\reg'
+out = r'C:\inetpub\wwwroot\wab\min'
+
 if not out.endswith(r'\\'): out += r'\\'
 for root, dirs, files in os.walk(path):
     for name in dirs:
@@ -25,6 +33,8 @@ for root, dirs, files in os.walk(path):
             subprocess.call('uglifyjs '+fullname + ' -o '+newpath, shell=True)
         elif name.endswith('.css'):
             subprocess.call("cleancss "+fullname+" -o "+newpath ,shell=True)
+        elif name.endswith('.html'):
+            subprocess.call("minimize -c true -d true -s true -q true --output " + newpath + " " + fullname,shell=True )
         else:
             shutil.copyfile(fullname,newpath)
 
